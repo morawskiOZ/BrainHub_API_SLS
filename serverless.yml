@@ -1,0 +1,15 @@
+service: brainhub-api-sls
+provider:
+  name: aws
+  runtime: nodejs12.x
+functions:
+  create:
+    handler: handler.create
+    events:
+      - http:
+          path: events
+          method: post
+          cors: true
+
+plugins:
+  - serverless-offline

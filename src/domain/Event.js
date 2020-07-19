@@ -41,20 +41,19 @@ class Event {
   }
 
   async save(connectToDatabase) {
-    return await connectToDatabase().then(async () => {
-      try {
-        const response = await EventModel.create(this.data)
-        return {
-          statusCode: 200,
-          body: JSON.stringify(response),
-        }
-      } catch (err) {
-        return {
-          statusCode: 500,
-          body: JSON.stringify(err),
-        }
+    await connectToDatabase()
+    try {
+      const response = await EventModel.create(this.data)
+      return {
+        statusCode: 200,
+        body: JSON.stringify(response),
       }
-    })
+    } catch (err) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify(err),
+      }
+    }
   }
 }
 

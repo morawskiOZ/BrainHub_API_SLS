@@ -1,15 +1,18 @@
 const Event = require('../domain/Event')
 
-const eventSave = (event, context, callback) => {
+const eventSave = async (event, context, callback, dbConnection) => {
   const json = JSON.parse(event.body)
 
   const userEvent = new Event(json)
   userEvent.validate()
   if (userEvent.errors.length) {
-    event.sendBackErrors(callback)
+    const errors = userEvent.getErrors()
+    return callback(errors, null)
   }
+
   context.callbackWaitsForEmptyEventLoop = false
-  userEvent.save(callback)
+  const response = await userEvent.save(dbConnection)
+  callback(null, response)
 }
 
 module.exports = eventSave

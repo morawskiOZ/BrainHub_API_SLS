@@ -4,6 +4,7 @@ const eventSave = async (event, context, callback, dbConnection) => {
   const json = JSON.parse(event.body)
 
   const userEvent = new Event(json)
+
   userEvent.validate()
   if (userEvent.errors.length) {
     const errors = userEvent.getErrors()
@@ -12,6 +13,7 @@ const eventSave = async (event, context, callback, dbConnection) => {
 
   context.callbackWaitsForEmptyEventLoop = false
   const response = await userEvent.save(dbConnection)
+
   callback(null, response)
 }
 

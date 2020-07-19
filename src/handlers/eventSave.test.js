@@ -32,7 +32,7 @@ describe('Event Save handler', () => {
       expect(parsedData.date.substring(0, 10)).toBe(data.date)
     })
   })
-  test('should call callback with error data', async () => {
+  test('should call callback with error data if the inputs are incorrect', async () => {
     const data = {
       email: 'testwww',
       firstName: 'Test',

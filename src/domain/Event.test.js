@@ -43,6 +43,7 @@ describe('domain Event class', () => {
     expect(userEvent.getErrors()).toStrictEqual([
       { firstName: 'Field firstName is required' },
       { email: 'Wrong email format' },
+      { date: 'Wrong date format' },
     ])
   })
 })

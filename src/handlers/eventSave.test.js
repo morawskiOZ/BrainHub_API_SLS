@@ -54,6 +54,7 @@ describe('Event Save handler', () => {
       expect(lambdaCallbackArgs.success).toBe(null)
       expect(lambdaCallbackArgs.error).toStrictEqual([
         { email: 'Wrong email format' },
+        { date: 'Wrong date format' },
       ])
     })
   })

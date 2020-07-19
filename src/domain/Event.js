@@ -1,5 +1,7 @@
 // const connectToDatabase = require('../../db')
 const emailValidator = require('../validators/email')
+const dateValidator = require('../validators/date')
+
 const errorMessages = require('../errors/messages')
 const EventModel = require('../models/event')
 
@@ -23,6 +25,13 @@ class Event {
       const isEmailCorrect = emailValidator(this.data.email)
       if (!isEmailCorrect) {
         this.errors.push({ email: errorMessages.emailFormat })
+      }
+    }
+
+    if (!this.errors.some(error => error && error.date)) {
+      const isDateCorrect = dateValidator(this.data.date)
+      if (!isDateCorrect) {
+        this.errors.push({ date: errorMessages.dateFormat })
       }
     }
   }

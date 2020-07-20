@@ -45,11 +45,19 @@ class Event {
     try {
       const response = await EventModel.create(this.data)
       return {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+        },
         statusCode: 200,
         body: JSON.stringify(response),
       }
     } catch (err) {
       return {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+        },
         statusCode: 500,
         body: JSON.stringify(err),
       }

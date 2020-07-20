@@ -8,7 +8,17 @@ const eventSave = async (event, context, callback, dbConnection) => {
   userEvent.validate()
   if (userEvent.errors.length) {
     const errors = userEvent.getErrors()
-    return callback(errors, null)
+
+    const response = {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
+      statusCode: 500,
+      body: JSON.stringify(errors),
+    }
+
+    return callback(response, null)
   }
 
   context.callbackWaitsForEmptyEventLoop = false

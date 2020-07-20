@@ -3,7 +3,7 @@ const dbHandler = require('../mocks/db-handler')
 
 describe('Event Save handler', () => {
   afterAll(async () => await dbHandler.closeDatabase())
-  test('should call callback with correct data after successful contention to database', async () => {
+  test('callback is called with success response after connecting to DB', async () => {
     const data = {
       email: 'test@wp.pl',
       firstName: 'Test',
@@ -32,7 +32,7 @@ describe('Event Save handler', () => {
       expect(parsedData.date.substring(0, 10)).toBe(data.date)
     })
   })
-  test('should call callback with error data if the inputs are incorrect', async () => {
+  test('callback is called with error response after inputs validation errors', async () => {
     const data = {
       email: 'testwww',
       firstName: 'Test',
@@ -44,15 +44,15 @@ describe('Event Save handler', () => {
     const mockedLambdaCallback = (error, success) => {
       lambdaCallbackArgs = { error, success }
     }
-
     await eventSave(
       { body: JSON.stringify(data) },
       { callbackWaitsForEmptyEventLoop: true },
       mockedLambdaCallback,
       dbHandler.connect,
     ).then(() => {
+      const parsedErrorData = JSON.parse(lambdaCallbackArgs.error.body)
       expect(lambdaCallbackArgs.success).toBe(null)
-      expect(lambdaCallbackArgs.error).toStrictEqual([
+      expect(parsedErrorData).toStrictEqual([
         { email: 'Wrong email format' },
         { date: 'Wrong date format' },
       ])

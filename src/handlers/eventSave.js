@@ -7,24 +7,24 @@ const eventSave = async (event, context, callback, dbConnection) => {
 
   userEvent.validate()
   if (userEvent.errors.length) {
-    const errors = userEvent.getErrors()
+    const errors = { errors: userEvent.getErrors() }
 
-    const response = {
+    const errorResponse = {
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true,
       },
-      statusCode: 500,
+      statusCode: 422,
       body: JSON.stringify(errors),
     }
 
-    return callback(response, null)
+    return callback(null, errorResponse)
+  } else {
+    context.callbackWaitsForEmptyEventLoop = false
+    const response = await userEvent.save(dbConnection)
+
+    return callback(null, response)
   }
-
-  context.callbackWaitsForEmptyEventLoop = false
-  const response = await userEvent.save(dbConnection)
-
-  callback(null, response)
 }
 
 module.exports = eventSave

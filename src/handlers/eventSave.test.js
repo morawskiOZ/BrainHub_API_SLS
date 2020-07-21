@@ -50,9 +50,8 @@ describe('Event Save handler', () => {
       mockedLambdaCallback,
       dbHandler.connect,
     ).then(() => {
-      const parsedErrorData = JSON.parse(lambdaCallbackArgs.error.body)
-      expect(lambdaCallbackArgs.success).toBe(null)
-      expect(parsedErrorData).toStrictEqual([
+      const parsedErrorData = JSON.parse(lambdaCallbackArgs.success.body)
+      expect(parsedErrorData.errors).toStrictEqual([
         { email: 'Wrong email format' },
         { date: 'Wrong date format' },
       ])

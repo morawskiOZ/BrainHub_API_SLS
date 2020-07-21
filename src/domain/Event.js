@@ -1,7 +1,5 @@
-// const connectToDatabase = require('../../db')
 const emailValidator = require('../validators/email')
 const dateValidator = require('../validators/date')
-
 const errorMessages = require('../errors/messages')
 const EventModel = require('../models/event')
 
